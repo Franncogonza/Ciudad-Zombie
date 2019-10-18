@@ -15,6 +15,24 @@ var Jugador = {
     mover: function(movX, movY) {
         this.x = this.x + movX;
         this.y = this.y + movY;
+
+        //cambia la imagen segun direccion del auto jugador
+        if (movX < 0) {
+            this.sprite = 'imagenes/auto_rojo_izquierda.png';
+
+        }
+        if (movY < 0) {
+            this.sprite = 'imagenes/auto_rojo_arriba.png';
+
+        }
+        if (movX > 0) {
+            this.sprite = 'imagenes/auto_rojo_derecha.png';
+        }
+        if (movY > 0) {
+            this.sprite = 'imagenes/auto_rojo_abajo.png';
+
+        }
+
     },
 
     perderVidas: function(vidaperdida) {

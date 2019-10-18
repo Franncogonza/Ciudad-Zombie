@@ -115,15 +115,19 @@ Juego.capturarMovimiento = function(tecla) {
     // El movimiento esta determinado por la velocidad del jugador
     if (tecla == 'izq') {
         movX = -velocidad;
+        console.log(movX);
     }
     if (tecla == 'arriba') {
         movY = -velocidad;
+        console.log(movY);
     }
     if (tecla == 'der') {
         movX = velocidad;
+        console.log(movX)
     }
     if (tecla == 'abajo') {
         movY = velocidad;
+        console.log(movY);
     }
 
     // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
@@ -132,6 +136,7 @@ Juego.capturarMovimiento = function(tecla) {
         de sus metodos  */
 
         /* COMPLETAR */
+        this.jugador.mover(movX, movY);
     }
 };
 
@@ -141,12 +146,12 @@ Juego.dibujar = function() {
     //Se pinta la imagen de fondo segun el estado del juego
     this.dibujarFondo();
 
-
     /* Aca hay que agregar la logica para poder dibujar al jugador principal
-    utilizando al dibujante y los metodos que nos brinda.
+     utilizando al dibujante y los metodos que nos brinda.
+     
+     "Dibujante dibuja al jugador" */
+    Dibujante.dibujarEntidad(Jugador);
 
-    "Dibujante dibuja al jugador" */
-    dibujante.dibujarEntidad(Jugador);
 
 
     // Se recorren los obstaculos de la carretera pintandolos
@@ -157,7 +162,7 @@ Juego.dibujar = function() {
     // Se recorren los enemigos pintandolos
     this.enemigos.forEach(function(enemigo) {
         /* Completar */
-        dibujante.dibujarEntidad(enemigo);
+        Dibujante.dibujarEntidad(enemigo);
     });
 
     // El dibujante dibuja las vidas del jugador
@@ -265,4 +270,6 @@ document.addEventListener('keydown', function(e) {
     };
 
     Juego.capturarMovimiento(allowedKeys[e.keyCode]);
+
+
 });
