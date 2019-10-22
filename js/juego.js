@@ -17,11 +17,26 @@ var Juego = {
     // Indica si el jugador gano
     ganador: false,
 
+
     obstaculosCarretera: [
         /*Aca se van a agregar los obstaculos visibles. Tenemos una valla horizontal
         de ejemplo, pero podras agregar muchos mas. */
-        new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1)
-
+        new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1),
+        new Obstaculo('imagenes/valla_horizontal.png', 100, 430, 30, 30, 1),
+        new Obstaculo('imagenes/valla_horizontal.png', 130, 430, 30, 30, 1),
+        new Obstaculo('imagenes/valla_horizontal.png', 130, 100, 30, 30, 1),
+        new Obstaculo('imagenes/valla_horizontal.png', 160, 100, 30, 30, 1),
+        new Obstaculo('imagenes/valla_vertical.png', 180, 450, 30, 30, 1),
+        new Obstaculo('imagenes/valla_vertical.png', 480, 460, 30, 30, 1),
+        new Obstaculo('imagenes/valla_vertical.png', 480, 430, 30, 30, 1),
+        new Obstaculo('imagenes/valla_horizontal.png', 515, 410, 30, 30, 1),
+        new Obstaculo('imagenes/auto_verde_abajo.png', 180, 230, 15, 30, 1),
+        new Obstaculo('imagenes/auto_verde_derecha.png', 380, 460, 30, 15, 1),
+        new Obstaculo('imagenes/auto_verde_abajo.png', 850, 380, 15, 30, 1),
+        new Obstaculo('imagenes/bache.png', 150, 300, 15, 30, 1),
+        new Obstaculo('imagenes/bache.png', 500, 110, 30, 15, 1),
+        new Obstaculo('imagenes/bache.png', 810, 420, 15, 30, 1)
+        // new Obstaculo('imagenes/bache.png', 30, 15, 1)
     ],
     /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
      Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
@@ -44,7 +59,21 @@ var Juego = {
     ],
     // Los enemigos se agregaran en este arreglo.
     enemigos: [
+        new ZombieCaminante('imagenes/zombie1.png', 110, 530, 10, 10, -1.9, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
+        new ZombieCaminante('imagenes/zombie2.png', 90, 330, 10, 10, 1, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
+        new ZombieCaminante('imagenes/zombie2.png', 310, 450, 10, 10, 0.5, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
+        new ZombieCaminante('imagenes/zombie3.png', 590, 120, 10, 10, -3, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 880 }),
+        new ZombieCaminante('imagenes/zombie4.png', 415, 270, 10, 10, 0.8, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
+        new ZombieCaminante('imagenes/zombie2.png', 130, 430, 10, 10, -2.1, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
+        new ZombieCaminante('imagenes/zombie3.png', 290, 130, 10, 10, -2.3, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
+        new ZombieCaminante('imagenes/zombie4.png', 800, 530, 10, 10, 1.4, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
+        new ZombieCaminante('imagenes/zombie1.png', 730, 110, 10, 10, 2.4, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
+        new ZombieCaminante('imagenes/zombie1.png', 600, 220, 10, 10, 2.4, { desdeX: 0, hastaX: 900, desdeY: 0, hastaY: 850 }),
 
+        //Zombie conductor: sprite, x, y, ancho, alto, velocidad,rangoMov,dirMovimiento
+        new ZombieConductor('imagenes/tren_vertical.png', 644, 0, 30, 90, 11, { desdeX: -0, hastaX: 1300, desdeY: -400, hastaY: 1250 }, "Vertical"),
+        new ZombieConductor('imagenes/tren_vertical.png', 678, 280, 30, 90, -12, { desdeX: 0, hastaX: 1300, desdeY: -400, hastaY: 1250 }, "Vertical"),
+        new ZombieConductor('imagenes/tren_horizontal.png', 400, 322, 90, 30, -15, { desdeX: -400, hastaX: 1300, desdeY: -400, hastaY: 1250 }, "Horizontal")
     ]
 
 }
@@ -89,6 +118,7 @@ Juego.comenzar = function() {
     los movimientos y el pintado de la pantalla. Sera el encargado de calcular los
     ataques, colisiones, etc*/
     this.buclePrincipal();
+
 };
 
 Juego.buclePrincipal = function() {
@@ -115,26 +145,29 @@ Juego.capturarMovimiento = function(tecla) {
     // El movimiento esta determinado por la velocidad del jugador
     if (tecla == 'izq') {
         movX = -velocidad;
-        console.log(movX);
+
     }
     if (tecla == 'arriba') {
         movY = -velocidad;
-        console.log(movY);
+
     }
     if (tecla == 'der') {
         movX = velocidad;
-        console.log(movX)
+
     }
     if (tecla == 'abajo') {
         movY = velocidad;
-        console.log(movY);
+
     }
 
     // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
     if (this.chequearColisiones(movX + this.jugador.x, movY + this.jugador.y)) {
+        // console.log(movX + this.jugador.x);
+        // console.log(movY + this.jugador.y);
+        // console.log(this.jugador);
+
         /* Aca tiene que estar la logica para mover al jugador invocando alguno
         de sus metodos  */
-
         /* COMPLETAR */
         this.jugador.mover(movX, movY);
     }
@@ -152,7 +185,9 @@ Juego.dibujar = function() {
      "Dibujante dibuja al jugador" */
     Dibujante.dibujarEntidad(Jugador);
 
-
+    //Dibujo rectangulo de llegada
+    Dibujante.dibujarRectangulo('blue', 759, 503, 128, 26);
+    Dibujante.dibujarRectangulo('yellow', 759, 510, 128, 10);
 
     // Se recorren los obstaculos de la carretera pintandolos
     this.obstaculosCarretera.forEach(function(obstaculo) {
@@ -181,6 +216,9 @@ un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
 una funcionalidad similar pero para que se muevan.*/
 Juego.moverEnemigos = function() {
     /* COMPLETAR */
+    this.enemigos.forEach(function(enemigo) {
+        enemigo.mover();
+    }, this);
 };
 
 /* Recorre los enemigos para ver cual esta colisionando con el jugador
@@ -192,9 +230,12 @@ Juego.calcularAtaques = function() {
         if (this.intersecan(enemigo, this.jugador, this.jugador.x, this.jugador.y)) {
             /* Si el enemigo colisiona debe empezar su ataque
             COMPLETAR */
+            enemigo.comenzarAtaque(this.jugador);
+
         } else {
             /* Sino, debe dejar de atacar
             COMPLETAR */
+            enemigo.dejarDeAtacar();
         }
     }, this);
 };
@@ -204,16 +245,17 @@ Juego.calcularAtaques = function() {
 /* Aca se chequea si el jugador se peude mover a la posicion destino.
  Es decir, que no haya obstaculos que se interpongan. De ser asi, no podra moverse */
 Juego.chequearColisiones = function(x, y) {
-    var puedeMoverse = true
+    var puedeMoverse = true;
     this.obstaculos().forEach(function(obstaculo) {
         if (this.intersecan(obstaculo, this.jugador, x, y)) {
 
             /*COMPLETAR, obstaculo debe chocar al jugador*/
+            quitaVida(obstaculo);
 
-            puedeMoverse = false
+            puedeMoverse = false;
         }
-    }, this)
-    return puedeMoverse
+    }, this);
+    return puedeMoverse;
 };
 
 /* Este metodo chequea si los elementos 1 y 2 si cruzan en x e y
@@ -236,15 +278,21 @@ Juego.dibujarFondo = function() {
     // Si se termino el juego hay que mostrar el mensaje de game over de fondo
     if (this.terminoJuego()) {
         Dibujante.dibujarImagen('imagenes/mensaje_gameover.png', 0, 5, this.anchoCanvas, this.altoCanvas);
+
         document.getElementById('reiniciar').style.visibility = 'visible';
+        this.ocultarEnemigos();
+        this.ocultarObstaculos();
     }
 
     // Si se gano el juego hay que mostrar el mensaje de ganoJuego de fondo
     else if (this.ganoJuego()) {
         Dibujante.dibujarImagen('imagenes/Splash.png', 190, 113, 500, 203);
         document.getElementById('reiniciar').style.visibility = 'visible';
+        this.ocultarEnemigos();
+        this.ocultarObstaculos();
     } else {
         Dibujante.dibujarImagen('imagenes/mapa.png', 0, 5, this.anchoCanvas, this.altoCanvas);
+
     }
 };
 
